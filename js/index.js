@@ -71,7 +71,7 @@ $('#question').dialog({
         '<div class="comment_list">'+
 
         '</div>';
-        $('.main_left .content').preappend(html);
+        $('.main_left .content').prepend(html);
 
 
 
