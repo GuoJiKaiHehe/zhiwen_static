@@ -1,0 +1,146 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Document</title>
+    <link rel="stylesheet" href="css/smoothness/jquery.ui.css">
+  
+    <link rel="stylesheet" href="css/style.css">
+    <link rel="shortcut icon" type="image/x-icon" href="img/favicon.ico">
+</head>
+<body>
+    
+
+<div id="header">
+    <div class="header_main">
+        <h1>知问</h1>
+        <div class="header_search">
+        <input type="text" name="search" class="search" />
+        </div>
+        <div class="header_button">
+        <button type="button" id="search_button">查询</button>
+ <button type="buton" id="question_button">提问</button>
+        </div>
+
+        <div class="header_member">
+        <a href="###" id="reg_a">注册</a> 
+        <a href="###" id="member">用户</a>
+        |
+        <a href="javascript:void(0)" id="login_a">登录</a>
+        <a href="###" id="logout">退出</a>
+        </div>
+    </div>
+</div>
+<div id="main">
+    <div class="main_left">
+        <div id="tabs">
+        <ul>
+            <li><a href="#content">最新动态</a></li>
+          
+        </ul>
+        <div id="content">
+           
+        </div>
+      </div>
+       <div class="content">
+            
+            </div>
+      
+    </div>
+    <div class="main_right">
+        <div id="accordion">
+            <h1>质问专栏  <a href="#" class="more" style="float:right">更多</a></h1>
+            <div>
+                <ul>
+                    <li>军改后六位将军首次特别亮相</li>
+<li>贼王病逝 策划绑架李嘉诚儿子</li>
+<li>他直播杀人后自杀 称杀过15人</li>
+<li>精子库高校宣传 大学生显羞涩</li>
+<li>女子屡遭家暴 被丈夫咬掉鼻子</li>
+<li>男子雄安看房：人民币不值钱</li>
+<li>老太扮米老鼠 为儿媳筹钱治病</li>
+<li>韩媒搞乌龙 称美航母抵朝鲜</li>
+                </ul>
+            </div>
+            <h1>才但2</h1>
+            <div>neirong2</div>
+            <h1>才但3</h1>
+            <div>neirogn3</div>
+         </div>
+    </div>
+
+
+</div>
+
+
+<div id="loading">正在加载中...</div>
+<div id="error">请登录后在进行此操作...</div>
+<script src="js/jquery.js"></script>
+
+<script src="js/jquery.cookie.js"></script>
+<script src="js/jquery.form.js"></script>
+<script src="js/jquery.ui.js"></script>
+<script src="js/jquery.validate.js"></script>
+<script src="//cdn.ckeditor.com/4.6.2/standard/ckeditor.js"></script>
+<script src="js/store.js"></script>
+<script src="js/layer/layer.js"></script>
+<script src="js/layer/dialog.js"></script>
+<script src="js/index.js"></script>
+</body>
+</html>
+
+<form id="question" action="123.html" method="post" title="提问">
+    <p>
+    <label for="user">问题名称：</label>
+    <input type="text" name="title" class="text" style="width:390px;" id="title" />
+    <span class="star"></span>
+    </p>
+    <p>
+        <textarea class="uEditorCustom" name="content_e">请填写问题描述！</textarea>
+    </p>
+</form>
+
+<form id="reg"  action="123.html" title="会员注册">
+<ol class="reg_error"></ol>
+       <p>
+        <label for="user">帐号：</label>
+        <input type="text" name="user" class="text " id="user"   />
+        <span class="star">*</span>
+    </p>
+    <p>
+        <label for="pass">密码：</label>
+        <input type="password" name="pass" class="text" id="pass" />
+        <span class="star">*</span>
+    </p>
+    <p>
+    <label for="email">邮箱：</label>
+    <input type="text" name="email" class="text" id="email"  />
+    <span class="star">*</span>
+    </p>
+    <p>
+    <label>性别：</label>
+    <input type="radio" name="sex" id="male" checked="checked">
+    <label for="male">男</label>
+    </input><input type="radio" name="sex" id="female">
+    <label for="female">女</label>
+    </input>
+    </p>
+    
+</form>
+<form id="login" action="123.html" >
+<ol class="login_error"></ol>
+     <p>
+        <label for="user">帐号：</label>
+        <input type="text" name="user" class="text user "   />
+        <span class="star">*</span>
+    </p>
+    <p>
+        <label for="pass">密码：</label>
+        <input type="password" name="pass" class="text pass"  />
+        <span class="star">*</span>
+    </p>
+    <p>
+        <input type="checkbox" name="expires" id="expires" checked="checked">
+        <label for="expires">登陆后有效期一周</label></input>
+    </p>
+</form>
