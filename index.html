@@ -81,7 +81,11 @@
 <script src="js/jquery.form.js"></script>
 <script src="js/jquery.ui.js"></script>
 <script src="js/jquery.validate.js"></script>
-<script src="//cdn.ckeditor.com/4.6.2/standard/ckeditor.js"></script>
+
+<script type="text/javascript" src="ueditor/ueditor.config.js"></script>
+<!-- 编辑器源码文件 -->
+<script type="text/javascript" src="ueditor/ueditor.all.js"></script>
+ 
 <script src="js/store.js"></script>
 <script src="js/layer/layer.js"></script>
 <script src="js/layer/dialog.js"></script>
@@ -96,7 +100,18 @@
     <span class="star"></span>
     </p>
     <p>
-        <textarea class="uEditorCustom" name="content_e">请填写问题描述！</textarea>
+        <!-- <textarea class="uEditorCustom" name="content_e">请填写问题描述！</textarea> -->
+	<script id="content_e" name="content_e" type="text/plain">请填写问题描述!</script>
+	   <script type="text/javascript">
+      //  var ue = UE.getEditor('content_e');
+		 var ue =UE.getEditor('content_e',{
+        initialFrameWidth : 600,
+        initialFrameHeight: '200',
+    });
+    </script>
+	<!-- 配置文件 -->
+
+<!-- 实例化编辑器 -->
     </p>
 </form>
 

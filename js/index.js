@@ -11,7 +11,7 @@ $('#search_button').button({
 })
 //提问按钮
 $('#question_button').click(function(){
-    if($.cookie('user')){
+    if(store.get('user')){
         $('#question').dialog('open');
       
     }else{
@@ -27,7 +27,7 @@ $('#question_button').click(function(){
     },
 });
 
- CKEDITOR.replace( 'content_e' );
+ //CKEDITOR.replace( 'content_e' );
 
 $('#question').dialog({
     autoOpen:false,
@@ -46,7 +46,7 @@ $('#question').dialog({
 }).validate({
     submitHandler:function(form){
        
-    var user=$.cookie('user');
+    var user=store.get('user');
 
    var question=store.get('question')||[];
    console.log(question)
@@ -59,19 +59,28 @@ $('#question').dialog({
     var q_temp={
         'id':qid,
         'title':$('#title').val(),
-        'content':CKEDITOR.instances.content_e.getData(),
+        'content':ue.getContent(),
         'user':user,
         'date':new Date().Format("yyyy-MM-dd hh:mm:ss")
     };
     question.push(q_temp);
     store.set('question',question);
-    $('#question').resetForm();
-    CKEDITOR.instances.content_e.setData("");
-   var html = '<h4>' + user + ' 发表于 ' + new Date().Format("yyyy-MM-dd hh:mm:ss") + '</h4><h3>' +$('#title').val() + '</h3><div class="editor" qid="'+qid+'" >' + CKEDITOR.instances.content_e.getData()+ '</div><div class="bottom"> <span class="comment" data-id="' + qid + '" data-user="' + user + '" >0条评论</span> <span class="up" index='+(question.length-1)+'>收起</span></div><hr noshade="noshade" size="1" />'+
+   
+    //CKEDITOR.instances.content_e.setData("");
+
+	setTimeout(function(){
+		var html = '<h4>' + user + ' 发表于 ' + new Date().Format("yyyy-MM-dd hh:mm:ss") + '</h4><h3>' +$('#title').val() + '</h3><div class="editor" qid="'+qid+'" >' + ue.getContent()+ '</div><div class="bottom"> <span class="comment" data-id="' + qid + '" data-user="' + user + '" ><strong>0</strong>条评论</span> </div><hr noshade="noshade" size="1" />'+
         '<div class="comment_list">'+
 
         '</div>';
+		if($('.main_left .content .nothing').length>0){
+				$('.main_left .content').html("");
+		}
         $('.main_left .content').prepend(html);
+		  $('#question').resetForm();
+			ue.setContent("");
+	},500)
+   
 
 
 
@@ -118,7 +127,7 @@ if( store.get('question') && store.get('question').length!=0){
         var summary=[];
         for(var i=0;i<json.length;i++){
 
-        html += '<h4>' + json[i].user + ' 发表于 ' + json[i].date + '</h4><h3>' +json[i].title + '</h3><div class="editor" qid="'+json[i].id+'" >' + json[i].content+ '</div><div class="bottom"> <span class="comment" data-id="' + json[i].id + '" data-user="' + json[i].user + '" >'+json[i].count+'条评论<\/span> <span class="up" index='+i+'>收起</span></div><hr noshade="noshade" size="1" />'+
+        html += '<h4>' + json[i].user + ' 发表于 ' + json[i].date + '</h4><h3>' +json[i].title + '</h3><div class="editor" qid="'+json[i].id+'" >' + json[i].content+ '</div><div class="bottom"> <span class="comment" data-id="' + json[i].id + '" data-user="' + json[i].user + '" ><strong>'+json[i].count+'</strong>条评论<\/span> <span class="up" index='+i+'>收起</span></div><hr noshade="noshade" size="1" />'+
         '<div class="comment_list">'+
 
         '<\/div>';
@@ -181,59 +190,10 @@ if( store.get('question') && store.get('question').length!=0){
 
 
          $.each($('.bottom'),function(index,value){
-            $(this).on('click','.comment',function(){
-
-                var qid=$(this).attr('data-id');
-                var comment_this=this;
-               var  comment_list=$(comment_this).parent().next().next();
-               if(comment_list.is(':visible')){
-                    comment_list.hide(1000);
-               }
-                if(!comment_list.has('form').length){
-                     var str_add='<form>'+
-        '<dl class="comment_add">'+
-         '<dt><textarea name="comment"></textarea></dt><input type="hidden" name="qid" value="'+$(comment_this).attr('data-id')+'" /><input type="hidden" name="user" value="'+$.cookie('user')+'" /><dd><button type="button" class="comment_send"  >发表</button></dd>'+
-         '</dl>'+
-         '</form>';
-         $(comment_list).append(str_add).show();
-         $('.comment_send').button();
-         var comment=store.get('comment')||[];
-         var com_con='';
-
-         for(var i=0;i<comment.length;i++){
-            if(comment[i].qid==qid){
-                com_con+='<dl class="comment_content"><dt>' + comment[i].user+ '</dt><dd>' + comment[i].content + '</dd><dd>' +comment[i].date+ '</dd></dl>';
-            }
             
-         }
-         $(comment_list).prepend(com_con);
-
-                }
-            })
         })
 
-         $('body').on('click','.comment_send',function(){
-                var uid=$(this).parent().prev().val();
-                var qid=$(this).parent().prev().prev().val();
-                var question=store.get('question');
-                var user='';
-                
-                var comment=store.get('comment')||[];
-                var content=$(this).parent().prev().prev().prev().find('textarea[name=comment]');
-                var c_temp={
-                    'qid':qid,
-                    'user':$.cookie('user'),
-                    'content':content.val(),
-                    'date':new Date().Format('yyyy-MM-dd h:m:s')
-                };
-                comment.push(c_temp);
-                store.set('comment',comment);
-var comment_list=content.parent().parent().parent().parent();
- comment_list.prepend('<dl class="comment_content"><dt>' + $.cookie('user') + '</dt><dd>' + content.val() + '</dd><dd>' +new Date().Format('yyyy-MM-dd H:i:s')+ '</dd></dl>');
-            content.val('')
-
-
-         });
+         
 
 
     })();
@@ -242,9 +202,74 @@ var comment_list=content.parent().parent().parent().parent();
    
 }else{
 
-$('#main .main_left .content').append('<p style="text-align:center;">没有任何问题！</p>');
+$('#main .main_left .content').append('<p style="text-align:center;" class="nothing">没有任何问题！</p>');
 
 }
+$('body').on('click','.comment_send',function(){
+				var comment_list=$(this).parent().parent().parent().parent();
+				//console.log(comment_list);
+				
+				var bottom_btn=comment_list.prev().prev().find(".comment");
+			
+				var c=bottom_btn.find("strong");
+					c.text(parseInt(c.text())+1)
+				
+                var uid=$(this).parent().prev().val();
+                var qid=$(this).parent().prev().prev().val();
+                var question=store.get('question');
+                var user='';
+                
+                var comment=store.get('comment')||[];
+                var content=$(this).parent().prev().prev().prev().find('textarea[name=comment]');
+				var date=new Date().Format('yyyy-MM-dd h:m:s');
+                var c_temp={
+                    'qid':qid,
+                    'user':store.get('user'),
+                    'content':content.val(),
+                    'date':date
+                };
+                comment.push(c_temp);
+                store.set('comment',comment);
+var comment_list=content.parent().parent().parent().parent();
+ comment_list.prepend('<dl class="comment_content"><dt>' + store.get('user') + '</dt><dd>' + content.val() + '</dd><dd>' +date+ '</dd></dl>');
+            content.val('')
+			
+
+
+});
+
+$('body').on('click','.comment',function(){
+
+		var qid=$(this).attr('data-id');
+		var comment_this=this;
+	   var  comment_list=$(comment_this).parent().next().next();
+	   //console.log(comment_list)
+	   if(comment_list.is(':visible')){
+			comment_list.hide(1000);
+	   }else{
+		   comment_list.show(1000);
+	   }
+		if(!comment_list.has('form').length){
+			 var str_add='<form>'+
+'<dl class="comment_add">'+
+ '<dt><textarea name="comment"></textarea></dt><input type="hidden" name="qid" value="'+$(comment_this).attr('data-id')+'" /><input type="hidden" name="user" value="'+store.get('user')+'" /><dd><button type="button" class="comment_send"  >发表</button></dd>'+
+ '</dl>'+
+ '</form>';
+ $(comment_list).append(str_add).show();
+ $('.comment_send').button();
+ var comment=store.get('comment')||[];
+ var com_con='';
+
+ for(var i=0;i<comment.length;i++){
+	if(comment[i].qid==qid){
+		com_con+='<dl class="comment_content"><dt>' + comment[i].user+ '</dt><dd>' + comment[i].content + '</dd><dd>' +comment[i].date+ '</dd></dl>';
+	}
+	
+ }
+ $(comment_list).prepend(com_con);
+
+		}
+	})
 
 
 
@@ -333,8 +358,8 @@ $('#header').on('click','#logout',function(e){
 })
 
 function check_user(){
-    if($.cookie('user')){
-        $('#member').show().html($.cookie('user')+'，你好！');
+    if(store.get('user')){
+        $('#member').show().html(store.get('user')+'，你好！');
         $('#logout').show();
         $('#reg_a').hide();
         $('#login_a').hide();
@@ -401,7 +426,7 @@ $('#login').dialog({
                 }
             }
             if(t>0){
-                $.cookie('user',username);
+                store.set('user',username);
                 $('#login').dialog('close');
                 dialog.smaile('登录成功！');
                 $('#reg_a').remove();
@@ -490,7 +515,7 @@ $('#reg_a').click(function(){
             },
             
             submitHandler : function (form) {
-                alert('');
+               // alert('');
                   
                 var users=store.get('users') || [];
 
